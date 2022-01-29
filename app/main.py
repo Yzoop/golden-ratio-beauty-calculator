@@ -1,14 +1,14 @@
+import uvicorn
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import Response
-import os
-from random import randint
 import uuid
+import os
+
+
+IMAGEDIR = "cache"
+os.makedirs(IMAGEDIR, exist_ok=True)
 
 app = FastAPI()
 
-db = []
-IMAGEDIR = "cache"
-os.makedirs(IMAGEDIR, exist_ok=True)
 
 @app.post("/images/")
 async def create_upload_file(file: UploadFile = File(...)):
@@ -21,3 +21,8 @@ async def create_upload_file(file: UploadFile = File(...)):
         f.write(contents)
 
     return {"filename": file.filename}
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
