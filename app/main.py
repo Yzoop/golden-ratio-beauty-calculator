@@ -21,8 +21,3 @@ async def create_upload_file(file: UploadFile = File(...)):
         f.write(contents)
 
     return {"filename": file.filename}
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
