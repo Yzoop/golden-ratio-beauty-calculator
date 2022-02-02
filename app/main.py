@@ -2,11 +2,12 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile
 import uuid
 import numpy as np
+from io import BytesIO
+from PIL import Image
 import os
 
 
 IMAGEDIR = "cache"
-os.makedirs(IMAGEDIR, exist_ok=True)
 
 app = FastAPI()
 
@@ -16,10 +17,8 @@ async def create_upload_file(file: UploadFile = File(...)):
 
     file.filename = f"{uuid.uuid4()}.jpg"
     contents = await file.read()  # <-- Important!
-    save_path = os.path.join(IMAGEDIR, file.filename)
-    # example of how you can save the file
-    with open(save_path, "wb") as f:
-        f.write(contents)
+    #save_path = os.path.join(IMAGEDIR, file.filename)
+    im = Image.open(BytesIO(contents))
     # calculate the golden face ration
     ratio = 0.5
     return {"ratio": ratio}
