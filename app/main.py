@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, File, UploadFile
 import uuid
+import numpy as np
 import os
 
 
@@ -19,10 +20,11 @@ async def create_upload_file(file: UploadFile = File(...)):
     # example of how you can save the file
     with open(save_path, "wb") as f:
         f.write(contents)
-
-    return {"filename": file.filename}
+    # calculate the golden face ration
+    ratio = 0.5
+    return {"ratio": ratio}
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 80))
     uvicorn.run(app, host="0.0.0.0", port=port)
